@@ -5,5 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.7.5"
-clap = { version = "4.5.7", features = ["env", "derive"] }
+figment = { version = "0.10.19", features = ["env", "yaml"] }
+serde = { version = "1.0.203", features = ["derive", "serde_derive"] }
+serde_yaml = "0.9.34"
 tokio = { version = "1.38.0", features = ["macros", "rt-multi-thread"] }

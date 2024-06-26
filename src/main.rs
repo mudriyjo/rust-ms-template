@@ -4,14 +4,14 @@ use axum::{
     routing::get,
     Router
 };
-use clap::Parser;
-use config::config::{get_config};
+
+use config::config::get_config;
 
 #[tokio::main]
 async fn main() {
-    let config = get_config();
+    let config = get_config("dev");
     println!("{:?}", config);
     let app = Router::new().route("/", get(|| async {"Hello world!"}));
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(config.server_address).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }

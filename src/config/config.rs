@@ -1,12 +1,19 @@
-use clap::Parser;
+use figment::{
+    providers::{Env, Format, Yaml},
+    Figment,
+};
+use serde::Deserialize;
 
-#[derive(clap::Parser, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Config {
-    #[clap(long,env)]
-    pub server_adress: String
+    pub server_address: String,
 }
 
-pub fn get_config() -> Config {
-    let config = Config::parse();
-    config
+pub fn get_config(profile: &str) -> Config {
+    let config_path = format!("{}-config.yaml", profile);
+    Figment::new()
+        .merge(Yaml::file(config_path))
+        .merge(Env::prefixed("SERVICE_"))
+        .extract()
+        .expect("Can't configure server using env and yaml...")
 }
